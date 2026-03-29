@@ -9,6 +9,8 @@ import { StepCounter } from './components/StepCounter';
 import type { UploadedFile } from './components/DocumentUpload';
 import dynamic from 'next/dynamic';
 import { QueryEmbeddingDeepDive } from './components/deepdive/QueryEmbeddingDeepDive';
+import { CosineSimilarityDeepDive } from './components/deepdive/CosineSimilarityDeepDive';
+import { TopKRetrievalDeepDive } from './components/deepdive/TopKRetrievalDeepDive';
 
 const DocumentUpload = dynamic(() => import('./components/DocumentUpload').then(mod => mod.DocumentUpload), { ssr: false });
 import { cosineSimilarity } from '../lib/similarity';
@@ -67,6 +69,8 @@ export default function Home() {
   // Typewriter effect state
   const [displayedAnswer, setDisplayedAnswer] = useState('');
   const [isEmbeddingOpen, setIsEmbeddingOpen] = useState(false);
+  const [isCosineOpen, setIsCosineOpen] = useState(false);
+  const [isTopKOpen, setIsTopKOpen] = useState(false);
 
   useEffect(() => {
     if (state.currentStep >= 0 && scrollRef.current) {
@@ -246,6 +250,8 @@ export default function Home() {
 
   const resetPipeline = () => {
     setIsEmbeddingOpen(false);
+    setIsCosineOpen(false);
+    setIsTopKOpen(false);
     setState(prev => ({ 
       ...initialState, 
       query: prev.query, 
@@ -556,9 +562,33 @@ export default function Home() {
                         </div>
                       </div>
                     ))}
+                    {state.stepStatuses[3] === 'complete' && (
+                      <motion.button
+                        type="button"
+                        onClick={() => setIsCosineOpen(prev => !prev)}
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="mt-3 text-xs text-pink-400 font-semibold flex items-center gap-1 hover:text-pink-300 transition-colors cursor-pointer w-full justify-center pt-2 border-t border-slate-700/50"
+                      >
+                        {isCosineOpen
+                          ? '▲ Collapse deep dive'
+                          : '🔍 Click to explore how cosine similarity is computed →'}
+                      </motion.button>
+                    )}
                   </div>
                 }
               />
+              <AnimatePresence>
+                {state.stepStatuses[3] === 'complete' && isCosineOpen && (
+                  <CosineSimilarityDeepDive
+                    query={state.query}
+                    queryVector={state.queryVector}
+                    searchResults={state.searchResults}
+                    mode={state.mode}
+                    onClose={() => setIsCosineOpen(false)}
+                  />
+                )}
+              </AnimatePresence>
             </div>
 
             <ConnectorArrow isActive={state.stepStatuses[3] === 'complete' && state.stepStatuses[4] === 'active'} accentColor="#ec4899" />
@@ -590,9 +620,33 @@ export default function Home() {
                          {chunk.text}
                       </motion.div>
                     ))}
+                    {state.stepStatuses[4] === 'complete' && (
+                      <motion.button
+                        type="button"
+                        onClick={() => setIsTopKOpen(prev => !prev)}
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="mt-3 text-xs text-amber-400 font-semibold flex items-center gap-1 hover:text-amber-300 transition-colors cursor-pointer w-full justify-center pt-2 border-t border-slate-700/50"
+                      >
+                        {isTopKOpen
+                          ? '▲ Collapse deep dive'
+                          : '🔍 Click to explore how Top-K retrieval works →'}
+                      </motion.button>
+                    )}
                   </div>
                 }
               />
+              <AnimatePresence>
+                {state.stepStatuses[4] === 'complete' && isTopKOpen && (
+                  <TopKRetrievalDeepDive
+                    query={state.query}
+                    searchResults={state.searchResults}
+                    retrievedChunks={state.retrievedChunks}
+                    mode={state.mode}
+                    onClose={() => setIsTopKOpen(false)}
+                  />
+                )}
+              </AnimatePresence>
             </div>
 
             <ConnectorArrow isActive={state.stepStatuses[4] === 'complete' && state.stepStatuses[5] === 'active'} accentColor="#f59e0b" />

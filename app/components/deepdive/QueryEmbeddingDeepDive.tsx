@@ -205,7 +205,7 @@ export function QueryEmbeddingDeepDive({ query, queryVector, model, dimensions, 
             <h3 className="text-violet-300 font-bold">③ Transformer Self-Attention</h3>
           </div>
           <p className="text-slate-400 text-xs leading-relaxed mb-4">
-            The token vectors enter the transformer encoder. In each layer, <strong className="text-slate-200">self-attention</strong> lets every token look at every other token and update its own vector based on relevance. After many layers, the word <em>&quot;bank&quot;</em> means something different in <em>&quot;river bank&quot;</em> vs <em>&quot;bank account&quot;</em> — the surrounding words changed it. Thicker arcs below = stronger attention between those tokens.
+            The token vectors enter the transformer encoder. In each layer, <strong className="text-slate-200">self-attention</strong> lets every word token look at every other word token and update its own vector based on context. After many layers, the same word can mean entirely different things depending on what surrounds it — for example, <em>&quot;bank&quot;</em> in <em>&quot;river bank&quot;</em> vs <em>&quot;bank account&quot;</em>. The diagram below shows your actual query words and the attention connections between them. Thicker arcs = stronger influence between those tokens.
           </p>
 
           <div className="relative w-full h-[130px] mb-4 bg-[#0a0c14] rounded overflow-hidden border border-slate-800">
@@ -293,33 +293,45 @@ export function QueryEmbeddingDeepDive({ query, queryVector, model, dimensions, 
             <h3 className="text-violet-300 font-bold">④ Pooling — Many Vectors → One Vector</h3>
           </div>
           <p className="text-slate-400 text-xs leading-relaxed mb-4">
-            After all transformer layers, we still have <strong className="text-slate-200">one vector per token</strong>. But retrieval needs a <em>single</em> vector for the whole query. <strong className="text-slate-200">Pooling</strong> collapses all token vectors into one. The most common method: take the <code className="text-cyan-400 bg-slate-800 px-1 rounded">[CLS]</code> token&apos;s vector — the model was trained to pack the full sentence meaning into it.
+            After all transformer layers, we still have <strong className="text-slate-200">one vector per word token</strong>. But retrieval needs a <em>single</em> vector for the whole query. <strong className="text-slate-200">Pooling</strong> collapses all word token vectors into one fixed-size vector. The most common method is mean pooling — averaging all token vectors together — or using the model&apos;s internal summary representation, which is trained to capture the full sentence meaning. Either way, the result is one vector that represents your entire query.
           </p>
 
           {/* Pooling visual */}
           <div className="flex items-center justify-center gap-2 py-3 flex-wrap">
             {/* Token vector boxes */}
             <div className="flex gap-1">
-              {['[CLS]', ...words.slice(0, Math.min(3, words.length)), '[SEP]'].map((w, i) => (
+              {words.slice(0, Math.min(5, words.length)).map((w, i) => (
                 <div
                   key={i}
-                  className={`flex flex-col items-center gap-1 ${i === 0 ? 'opacity-100' : 'opacity-40'}`}
+                  className="flex flex-col items-center gap-1 opacity-40"
                 >
-                  <div className={`w-10 h-14 rounded border flex items-end justify-center pb-1 text-[8px] font-mono ${i === 0 ? 'border-cyan-500 bg-cyan-500/10 text-cyan-300' : 'border-slate-700 bg-slate-800 text-slate-500'}`}>
+                  <div className="w-10 h-14 rounded border border-slate-700 bg-slate-800 flex items-end justify-center pb-1 text-[8px] font-mono text-slate-500">
                     <div className="flex flex-col gap-0.5 w-6">
                       {[...Array(5)].map((_, k) => (
-                        <div key={k} className={`h-1.5 rounded-sm ${i === 0 ? 'bg-cyan-500' : 'bg-slate-600'}`} style={{ width: `${40 + Math.sin(i * 5 + k) * 30}%` }} />
+                        <div
+                          key={k}
+                          className="h-1.5 rounded-sm bg-slate-600"
+                          style={{ width: `${40 + Math.sin(i * 5 + k) * 30}%` }}
+                        />
                       ))}
                     </div>
                   </div>
                   <span className="text-[9px] text-slate-500 font-mono">{w}</span>
                 </div>
               ))}
+              {words.length > 5 && (
+                <div className="flex flex-col items-center gap-1 opacity-30">
+                  <div className="w-10 h-14 rounded border border-slate-700 bg-slate-800 flex items-center justify-center text-slate-600 text-lg">
+                    ...
+                  </div>
+                  <span className="text-[9px] text-slate-600 font-mono">+{words.length - 5} more</span>
+                </div>
+              )}
             </div>
 
             {/* Arrow */}
             <div className="flex flex-col items-center text-slate-500 text-xs mx-2">
-              <span className="font-bold text-cyan-400">CLS</span>
+              <span className="font-bold text-cyan-400">mean</span>
               <span className="text-lg">→</span>
               <span>pooling</span>
             </div>
@@ -336,7 +348,7 @@ export function QueryEmbeddingDeepDive({ query, queryVector, model, dimensions, 
               <span className="text-[9px] text-violet-300 font-mono">1 × {dimensions}</span>
             </div>
           </div>
-          <p className="text-slate-500 text-[10px] text-center italic mt-1">The [CLS] token&apos;s final vector becomes your query&apos;s embedding — one vector representing all meaning.</p>
+          <p className="text-slate-500 text-[10px] text-center italic mt-1">All word vectors are pooled into one — a single vector that represents the full meaning of your query.</p>
         </motion.div>
 
         {/* ── SECTION 4 — FINAL QUERY VECTOR ───────────────────────────── */}
