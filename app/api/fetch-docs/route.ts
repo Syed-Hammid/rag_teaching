@@ -55,7 +55,8 @@ export async function POST(req: Request) {
 
     // Step 1: Search Wikipedia titles
     const searchRes = await fetch(
-      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=5&utf8=1&format=json&origin=*`
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=5&utf8=1&format=json&origin=*`,
+      { headers: { 'User-Agent': 'RAGInteractiveDemoApp/1.0 (Educational RAG Pipeline Demo)' } }
     );
     const searchData = await searchRes.json();
     
@@ -68,7 +69,8 @@ export async function POST(req: Request) {
     const summariesPromises = searchResults.map(async (item: { title: string }) => {
       try {
         const pageRes = await fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(item.title)}`
+          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(item.title)}`,
+          { headers: { 'User-Agent': 'RAGInteractiveDemoApp/1.0 (Educational RAG Pipeline Demo)' } }
         );
         if (!pageRes.ok) return null;
         const pageData = await pageRes.json();
