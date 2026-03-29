@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface ScoredChunk {
   id: string;
@@ -21,7 +21,6 @@ interface TopKRetrievalDeepDiveProps {
 }
 
 export function TopKRetrievalDeepDive({
-  query,
   searchResults,
   retrievedChunks,
   mode,
