@@ -374,7 +374,16 @@ export function PromptAugmentationDeepDive({
           </p>
         </motion.div>
       </motion.div>
+
+      <button
+        type="button"
+        onClick={onClose}
+        className="w-full pt-4 mt-4 border-t border-slate-800/80 text-center text-xs text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+      >
+        ▲ Collapse deep dive
+      </button>
     </motion.div>
   );
 }
+
 
