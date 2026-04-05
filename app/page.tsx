@@ -11,6 +11,8 @@ import dynamic from 'next/dynamic';
 import { QueryEmbeddingDeepDive } from './components/deepdive/QueryEmbeddingDeepDive';
 import { CosineSimilarityDeepDive } from './components/deepdive/CosineSimilarityDeepDive';
 import { TopKRetrievalDeepDive } from './components/deepdive/TopKRetrievalDeepDive';
+import { PromptAugmentationDeepDive } from './components/deepdive/PromptAugmentationDeepDive';
+import { LLMGenerationDeepDive } from './components/deepdive/LLMGenerationDeepDive';
 
 const DocumentUpload = dynamic(() => import('./components/DocumentUpload').then(mod => mod.DocumentUpload), { ssr: false });
 import { cosineSimilarity } from '../lib/similarity';
@@ -71,6 +73,8 @@ export default function Home() {
   const [isEmbeddingOpen, setIsEmbeddingOpen] = useState(false);
   const [isCosineOpen, setIsCosineOpen] = useState(false);
   const [isTopKOpen, setIsTopKOpen] = useState(false);
+  const [isPromptOpen, setIsPromptOpen] = useState(false);
+  const [isLLMOpen, setIsLLMOpen] = useState(false);
 
   useEffect(() => {
     if (state.currentStep >= 0 && scrollRef.current) {
@@ -252,6 +256,8 @@ export default function Home() {
     setIsEmbeddingOpen(false);
     setIsCosineOpen(false);
     setIsTopKOpen(false);
+    setIsPromptOpen(false);
+    setIsLLMOpen(false);
     setState(prev => ({ 
       ...initialState, 
       query: prev.query, 
@@ -674,9 +680,33 @@ export default function Home() {
                         {line}
                       </motion.p>
                     ))}
+                    {state.stepStatuses[5] === 'complete' && (
+                      <motion.button
+                        type="button"
+                        onClick={() => setIsPromptOpen(prev => !prev)}
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="mt-3 text-xs text-emerald-400 font-semibold flex items-center gap-1 hover:text-emerald-300 transition-colors cursor-pointer w-full justify-center pt-2 border-t border-slate-700/50"
+                      >
+                        {isPromptOpen
+                          ? '▲ Collapse deep dive'
+                          : '🔍 Click to explore how the prompt is constructed →'}
+                      </motion.button>
+                    )}
                   </div>
                 }
               />
+              <AnimatePresence>
+                {state.stepStatuses[5] === 'complete' && isPromptOpen && (
+                  <PromptAugmentationDeepDive
+                    query={state.query}
+                    augmentedPrompt={state.augmentedPrompt}
+                    retrievedChunks={state.retrievedChunks}
+                    mode={state.mode}
+                    onClose={() => setIsPromptOpen(false)}
+                  />
+                )}
+              </AnimatePresence>
             </div>
 
             <ConnectorArrow isActive={state.stepStatuses[5] === 'complete' && state.stepStatuses[6] === 'active'} accentColor="#10b981" />
@@ -692,21 +722,61 @@ export default function Home() {
                 accentColor="#06b6d4" // cyan
                 status={state.stepStatuses[6]}
                 content={
-                  <div className="flex items-center gap-3 text-sm text-cyan-400 p-2 font-medium">
-                    Streaming completion inference...
-                    <div className="flex gap-1.5 ml-2">
-                       {[0, 1, 2].map(dot => (
-                         <motion.div
-                           key={dot}
-                           className="w-1.5 h-1.5 bg-cyan-400 rounded-full"
-                           animate={{ y: [0, -5, 0] }}
-                           transition={{ duration: 0.6, repeat: Infinity, delay: dot * 0.15 }}
-                         />
-                       ))}
-                    </div>
+                  <div className="flex flex-col gap-2">
+                    {state.stepStatuses[6] === 'active' && (
+                      <div className="flex items-center gap-3 text-sm text-cyan-400 p-2 font-medium">
+                        Sending to NVIDIA NIM — generating response...
+                        <div className="flex gap-1.5 ml-2">
+                          {[0, 1, 2].map(dot => (
+                            <motion.div
+                              key={dot}
+                              className="w-1.5 h-1.5 bg-cyan-400 rounded-full"
+                              animate={{ y: [0, -5, 0] }}
+                              transition={{ duration: 0.6, repeat: Infinity, delay: dot * 0.15 }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {state.stepStatuses[6] === 'complete' && (
+                      <>
+                        <div className="bg-[#0f1117] p-3 rounded-md text-xs text-slate-400 font-mono">
+                          <p className="text-cyan-400 font-sans font-semibold text-xs mb-1 flex justify-between">
+                            <span>Model: meta/llama-3.3-70b-instruct</span>
+                            <span className="text-emerald-400">✓ Complete</span>
+                          </p>
+                          <p className="text-slate-500">
+                            Temperature: 0.5 · Max tokens: 512 · Provider: NVIDIA NIM
+                          </p>
+                        </div>
+                        <motion.button
+                          type="button"
+                          onClick={() => setIsLLMOpen(prev => !prev)}
+                          animate={{ opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="mt-1 text-xs text-cyan-400 font-semibold flex items-center gap-1 hover:text-cyan-300 transition-colors cursor-pointer w-full justify-center pt-2 border-t border-slate-700/50"
+                        >
+                          {isLLMOpen
+                            ? '▲ Collapse deep dive'
+                            : '🔍 Click to explore how the LLM generates →'}
+                        </motion.button>
+                      </>
+                    )}
                   </div>
                 }
               />
+              <AnimatePresence>
+                {state.stepStatuses[6] === 'complete' && isLLMOpen && (
+                  <LLMGenerationDeepDive
+                    query={state.query}
+                    augmentedPrompt={state.augmentedPrompt}
+                    retrievedChunks={state.retrievedChunks}
+                    generatedAnswer={state.generatedAnswer}
+                    mode={state.mode}
+                    onClose={() => setIsLLMOpen(false)}
+                  />
+                )}
+              </AnimatePresence>
             </div>
 
             <ConnectorArrow isActive={state.stepStatuses[6] === 'complete' && state.stepStatuses[7] === 'active'} accentColor="#06b6d4" />
