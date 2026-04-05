@@ -1,3 +1,5 @@
+﻿'use client';
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -64,11 +66,11 @@ export function PromptAugmentationDeepDive({
         {/* Header / Intro */}
         <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xl">✍️</span>
-            <h3 className="text-emerald-300 font-bold text-lg">What is Prompt Augmentation? — The simple idea</h3>
+            <span className="text-xl">âœï¸</span>
+            <h3 className="text-emerald-300 font-bold text-lg">What is Prompt Augmentation? â€” The simple idea</h3>
           </div>
           <p className="text-slate-300 text-sm leading-relaxed">
-            Imagine you are a student taking an open-book exam. Instead of answering purely from memory, you are handed exactly the right pages from the textbook before writing your answer. Prompt Augmentation is that handoff — the retrieved chunks are placed directly inside the LLM&apos;s input so it can read the facts before generating its response. Without this step, the LLM would answer purely from its training data, risking hallucination. With it, the LLM is grounded in real, retrieved knowledge.
+            Imagine you are a student taking an open-book exam. Instead of answering purely from memory, you are handed exactly the right pages from the textbook before writing your answer. Prompt Augmentation is that handoff â€” the retrieved chunks are placed directly inside the LLM&apos;s input so it can read the facts before generating its response. Without this step, the LLM would answer purely from its training data, risking hallucination. With it, the LLM is grounded in real, retrieved knowledge.
           </p>
         </motion.div>
 
@@ -76,7 +78,7 @@ export function PromptAugmentationDeepDive({
         <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
           <div className="flex items-center gap-3 mb-3">
             <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Step 1 of 5</span>
-            <h4 className="text-emerald-300 font-bold">① Anatomy of the Augmented Prompt</h4>
+            <h4 className="text-emerald-300 font-bold">â‘  Anatomy of the Augmented Prompt</h4>
           </div>
           <p className="text-slate-300 text-sm mb-4">
             Every RAG prompt has three distinct parts that are assembled in order before being sent to the LLM. Each part serves a different role. Understanding this structure is the key to understanding why RAG answers are grounded rather than hallucinated.
@@ -90,7 +92,7 @@ export function PromptAugmentationDeepDive({
               className="bg-[#0f1117] border-l-4 border-[#6366f1] p-4 rounded-r-xl"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span>🛡️</span>
+                <span>ðŸ›¡ï¸</span>
                 <span className="text-[#6366f1] font-bold text-sm">SYSTEM INSTRUCTION</span>
                 <span className="bg-indigo-500/20 text-indigo-300 text-[9px] px-2 py-0.5 rounded-full ml-auto uppercase tracking-wider">Part 1 of 3</span>
               </div>
@@ -111,20 +113,20 @@ export function PromptAugmentationDeepDive({
               className="bg-[#0f1117] border-l-4 border-[#10b981] p-4 rounded-r-xl"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span>📄</span>
+                <span>ðŸ“„</span>
                 <span className="text-[#10b981] font-bold text-sm">RETRIEVED CONTEXT</span>
                 <span className="bg-emerald-500/20 text-emerald-300 text-[9px] px-2 py-0.5 rounded-full ml-auto uppercase tracking-wider">Part 2 of 3</span>
               </div>
               <div className="bg-[#07080b] font-mono text-xs text-emerald-300/80 p-3 rounded mb-2 border border-slate-800 flex flex-col gap-3">
                 {retrievedChunks.map((chunk, i) => (
                   <div key={i}>
-                    <div className="text-slate-500 mb-1">[Chunk {i + 1} — {mode === 'web' ? chunk.source : `Chunk #${chunk.chunkIndex}`}]</div>
+                    <div className="text-slate-500 mb-1">[Chunk {i + 1} â€” {mode === 'web' ? chunk.source : `Chunk #${chunk.chunkIndex}`}]</div>
                     <div>{chunk.text}</div>
                   </div>
                 ))}
               </div>
               <p className="text-slate-500 text-xs italic">
-                This is the knowledge injection — real information retrieved from the vector database. The LLM is instructed to ground its answer in this content.
+                This is the knowledge injection â€” real information retrieved from the vector database. The LLM is instructed to ground its answer in this content.
               </p>
             </motion.div>
 
@@ -135,7 +137,7 @@ export function PromptAugmentationDeepDive({
               className="bg-[#0f1117] border-l-4 border-[#3b82f6] p-4 rounded-r-xl"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span>❓</span>
+                <span>â“</span>
                 <span className="text-[#3b82f6] font-bold text-sm">USER QUESTION</span>
                 <span className="bg-blue-500/20 text-blue-300 text-[9px] px-2 py-0.5 rounded-full ml-auto uppercase tracking-wider">Part 3 of 3</span>
               </div>
@@ -143,7 +145,7 @@ export function PromptAugmentationDeepDive({
                 Question: {query}
               </div>
               <p className="text-slate-500 text-xs italic">
-                The original query — placed AFTER the context so the LLM reads the facts before the question.
+                The original query â€” placed AFTER the context so the LLM reads the facts before the question.
               </p>
             </motion.div>
           </div>
@@ -153,7 +155,7 @@ export function PromptAugmentationDeepDive({
         <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
           <div className="flex items-center gap-3 mb-3">
             <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Step 2 of 5</span>
-            <h4 className="text-emerald-300 font-bold">② The Complete Prompt — Exactly as Sent to the LLM</h4>
+            <h4 className="text-emerald-300 font-bold">â‘¡ The Complete Prompt â€” Exactly as Sent to the LLM</h4>
           </div>
           <p className="text-slate-300 text-sm mb-4">
             This is the verbatim prompt that was assembled and sent to meta/llama-3.3-70b-instruct. Every character here is what the LLM read before generating the answer. Notice how the retrieved context sits between the system instruction and the question.
@@ -164,7 +166,7 @@ export function PromptAugmentationDeepDive({
               onClick={handleCopy}
               className="absolute top-2 right-2 text-xs text-slate-500 hover:text-slate-300 bg-slate-800 px-2 py-1 rounded border border-slate-700 transition-colors z-10"
             >
-              {copied ? '✓ Copied!' : '📋 Copy prompt'}
+              {copied ? 'âœ“ Copied!' : 'ðŸ“‹ Copy prompt'}
             </button>
             <div className="bg-[#0a0c14] border border-emerald-500/20 rounded-xl p-4 max-h-[320px] overflow-y-auto font-mono text-xs pt-10">
               {augmentedPrompt.split('\n').map((line, i) => {
@@ -185,7 +187,7 @@ export function PromptAugmentationDeepDive({
         <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
           <div className="flex items-center gap-3 mb-3">
             <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Step 3 of 5</span>
-            <h4 className="text-emerald-300 font-bold">③ With vs Without Augmentation — The Difference</h4>
+            <h4 className="text-emerald-300 font-bold">â‘¢ With vs Without Augmentation â€” The Difference</h4>
           </div>
           <p className="text-slate-300 text-sm mb-4">
             The most important thing augmentation does is prevent hallucination. See below what the LLM would likely produce with and without the retrieved context for this exact query.
@@ -193,19 +195,19 @@ export function PromptAugmentationDeepDive({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-rose-500/5 border border-rose-500/20 rounded-xl p-4 flex flex-col h-full">
-              <h5 className="text-rose-400 font-semibold text-xs mb-3">❌ No Context Injected</h5>
+              <h5 className="text-rose-400 font-semibold text-xs mb-3">âŒ No Context Injected</h5>
               <div className="text-slate-400 text-xs leading-relaxed italic flex-grow">
                 &quot;Based on my training data, {query.length > 20 ? query.substring(0, 20) + '...' : query} is a complex topic. However, I may not have the most current or specific information on this. The details can vary significantly and I recommend verifying with up-to-date sources...&quot;
               </div>
               <div className="mt-3">
-                <span className="text-rose-400 text-[10px] bg-rose-500/10 rounded px-2 py-0.5 inline-block">⚠️ Vague • May hallucinate • No source grounding</span>
+                <span className="text-rose-400 text-[10px] bg-rose-500/10 rounded px-2 py-0.5 inline-block">âš ï¸ Vague â€¢ May hallucinate â€¢ No source grounding</span>
               </div>
             </div>
 
             <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 flex flex-col h-full">
-              <h5 className="text-emerald-400 font-semibold text-xs mb-3">✅ Context Injected from {retrievedChunks.length} Chunks</h5>
+              <h5 className="text-emerald-400 font-semibold text-xs mb-3">âœ… Context Injected from {retrievedChunks.length} Chunks</h5>
               <div className="text-slate-300 text-xs leading-relaxed flex-grow">
-                Based on: [{mode === 'web' ? retrievedChunks[0]?.source : `Chunk #${retrievedChunks[0]?.chunkIndex}`}] {retrievedChunks.length > 1 ? `and [${mode === 'web' ? retrievedChunks[1]?.source : `Chunk #${retrievedChunks[1]?.chunkIndex}`}]` : ''} — the LLM now has specific, sourced information to synthesize a grounded answer from.
+                Based on: [{mode === 'web' ? retrievedChunks[0]?.source : `Chunk #${retrievedChunks[0]?.chunkIndex}`}] {retrievedChunks.length > 1 ? `and [${mode === 'web' ? retrievedChunks[1]?.source : `Chunk #${retrievedChunks[1]?.chunkIndex}`}]` : ''} â€” the LLM now has specific, sourced information to synthesize a grounded answer from.
                 <div className="mt-2 text-slate-400 italic line-clamp-3">
                   &quot;{retrievedChunks[0]?.text.substring(0, 200)}...&quot;
                 </div>
@@ -214,13 +216,13 @@ export function PromptAugmentationDeepDive({
               <div className="flex flex-wrap gap-2 mt-2">
                 {retrievedChunks.map((chunk, i) => (
                   <span key={i} className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full whitespace-nowrap">
-                    📄 {mode === 'web' ? chunk.source : `Chunk #${chunk.chunkIndex}`}
+                    ðŸ“„ {mode === 'web' ? chunk.source : `Chunk #${chunk.chunkIndex}`}
                   </span>
                 ))}
               </div>
 
               <div className="mt-3">
-                <span className="text-emerald-400 text-[10px] bg-emerald-500/10 rounded px-2 py-0.5 inline-block">✓ Grounded • Source-cited • Factual</span>
+                <span className="text-emerald-400 text-[10px] bg-emerald-500/10 rounded px-2 py-0.5 inline-block">âœ“ Grounded â€¢ Source-cited â€¢ Factual</span>
               </div>
             </div>
           </div>
@@ -230,7 +232,7 @@ export function PromptAugmentationDeepDive({
         <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
           <div className="flex items-center gap-3 mb-3">
             <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Step 4 of 5</span>
-            <h4 className="text-emerald-300 font-bold">④ Prompt Engineering — Why These Exact Words?</h4>
+            <h4 className="text-emerald-300 font-bold">â‘£ Prompt Engineering â€” Why These Exact Words?</h4>
           </div>
           <p className="text-slate-300 text-sm mb-4">
             The system instruction is not random. Every phrase in it is an intentional prompt engineering decision that shapes how the LLM behaves. Small word changes produce very different outputs.
@@ -242,7 +244,7 @@ export function PromptAugmentationDeepDive({
                 <tbody>
                   <tr className="border-b border-slate-700/50 hover:bg-white/5 transition-colors">
                     <td className="p-3 text-emerald-300 font-mono w-1/3">&quot;knowledgeable assistant&quot;</td>
-                    <td className="p-3 text-slate-400">Sets confident, expert tone — not hesitant or robotic</td>
+                    <td className="p-3 text-slate-400">Sets confident, expert tone â€” not hesitant or robotic</td>
                   </tr>
                   <tr className="border-b border-slate-700/50 bg-white/[0.02] hover:bg-white/5 transition-colors">
                     <td className="p-3 text-emerald-300 font-mono">&quot;clearly and comprehensively&quot;</td>
@@ -250,7 +252,7 @@ export function PromptAugmentationDeepDive({
                   </tr>
                   <tr className="border-b border-slate-700/50 hover:bg-white/5 transition-colors">
                     <td className="p-3 text-emerald-300 font-mono">&quot;using the provided context&quot;</td>
-                    <td className="p-3 text-slate-400">The core RAG constraint — forces grounding in retrieved chunks, reduces hallucination</td>
+                    <td className="p-3 text-slate-400">The core RAG constraint â€” forces grounding in retrieved chunks, reduces hallucination</td>
                   </tr>
                   <tr className="border-b border-slate-700/50 bg-white/[0.02] hover:bg-white/5 transition-colors">
                     <td className="p-3 text-emerald-300 font-mono">&quot;Synthesize naturally&quot;</td>
@@ -267,7 +269,7 @@ export function PromptAugmentationDeepDive({
                 <tbody>
                   <tr className="border-b border-slate-700/50 hover:bg-white/5 transition-colors">
                     <td className="p-3 text-emerald-300 font-mono w-1/3">&quot;precise document assistant&quot;</td>
-                    <td className="p-3 text-slate-400">Narrows scope — don&apos;t go beyond the uploaded file</td>
+                    <td className="p-3 text-slate-400">Narrows scope â€” don&apos;t go beyond the uploaded file</td>
                   </tr>
                   <tr className="border-b border-slate-700/50 bg-white/[0.02] hover:bg-white/5 transition-colors">
                     <td className="p-3 text-emerald-300 font-mono">&quot;ONLY the provided document context&quot;</td>
@@ -291,10 +293,10 @@ export function PromptAugmentationDeepDive({
         <motion.div variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}>
           <div className="flex items-center gap-3 mb-3">
             <span className="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Step 5 of 5</span>
-            <h4 className="text-emerald-300 font-bold">⑤ Token Budget — Why Prompt Size Matters</h4>
+            <h4 className="text-emerald-300 font-bold">â‘¤ Token Budget â€” Why Prompt Size Matters</h4>
           </div>
           <p className="text-slate-300 text-sm mb-4">
-            Every LLM has a context window — the maximum number of tokens it can process at once. The augmented prompt consumes part of that budget. The rest is available for the LLM&apos;s generated answer. Understanding this tradeoff is critical when scaling RAG to production.
+            Every LLM has a context window â€” the maximum number of tokens it can process at once. The augmented prompt consumes part of that budget. The rest is available for the LLM&apos;s generated answer. Understanding this tradeoff is critical when scaling RAG to production.
           </p>
 
           <div className="bg-[#0f1117] p-4 rounded-xl border border-slate-700/50 mb-4">
@@ -340,16 +342,16 @@ export function PromptAugmentationDeepDive({
             <table className="w-full text-left border-collapse">
               <tbody>
                 <tr className="border-b border-slate-700/50 hover:bg-white/5 transition-colors">
-                  <td className="p-3 text-emerald-300 font-mono w-1/3">More chunks (↑K)</td>
-                  <td className="p-3 text-slate-400">More context → better answers BUT more tokens → higher cost + slower</td>
+                  <td className="p-3 text-emerald-300 font-mono w-1/3">More chunks (â†‘K)</td>
+                  <td className="p-3 text-slate-400">More context â†’ better answers BUT more tokens â†’ higher cost + slower</td>
                 </tr>
                 <tr className="border-b border-slate-700/50 bg-white/[0.02] hover:bg-white/5 transition-colors">
-                  <td className="p-3 text-emerald-300 font-mono">Fewer chunks (↓K)</td>
-                  <td className="p-3 text-slate-400">Less context → faster + cheaper BUT risks missing key information</td>
+                  <td className="p-3 text-emerald-300 font-mono">Fewer chunks (â†“K)</td>
+                  <td className="p-3 text-slate-400">Less context â†’ faster + cheaper BUT risks missing key information</td>
                 </tr>
                 <tr className="hover:bg-white/5 transition-colors">
                   <td className="p-3 text-emerald-300 font-mono">This pipeline</td>
-                  <td className="p-3 text-slate-400">K=2, ~{totalTokens} prompt tokens — balanced for teaching demo</td>
+                  <td className="p-3 text-slate-400">K=2, ~{totalTokens} prompt tokens â€” balanced for teaching demo</td>
                 </tr>
               </tbody>
             </table>
@@ -360,12 +362,12 @@ export function PromptAugmentationDeepDive({
         <motion.div variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }} className="mt-4 pt-6 border-t border-[#1e2235] flex flex-col items-center">
           <div className="flex items-center justify-center gap-2 flex-wrap text-[10px] sm:text-xs">
             <span className="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full font-mono border border-emerald-500/20">System Role</span>
-            <span className="text-emerald-500/50">→</span>
+            <span className="text-emerald-500/50">â†’</span>
             <span className="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full font-mono border border-emerald-500/20">Inject Context</span>
-            <span className="text-emerald-500/50">→</span>
+            <span className="text-emerald-500/50">â†’</span>
             <span className="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full font-mono border border-emerald-500/20">Append Question</span>
-            <span className="text-emerald-500/50">→</span>
-            <span className="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full font-mono border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.3)]">Send to LLM ✓</span>
+            <span className="text-emerald-500/50">â†’</span>
+            <span className="bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full font-mono border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.3)]">Send to LLM âœ“</span>
           </div>
           <p className="text-slate-500 text-[11px] text-center mt-4 max-w-lg">
             The augmented prompt is assembled entirely on the server in <code className="text-emerald-400/70 font-mono bg-[#0f1117] px-1 py-0.5 rounded">app/api/generate/route.ts</code> before the NVIDIA API call is made.
@@ -375,3 +377,4 @@ export function PromptAugmentationDeepDive({
     </motion.div>
   );
 }
+
